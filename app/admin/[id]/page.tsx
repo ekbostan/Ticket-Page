@@ -2,14 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { fetchTicket } from '../../utils/ticketUtils'
 
-const fetchTicket = async (id: string) => {
-  const response = await fetch(`/api/tickets/getById?id=${id}`);
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  return await response.json();
-};
 
 const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter();
@@ -32,20 +26,20 @@ const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
-
+  
     try {
-      const res = await fetch('/api/respondToTicket', {
+      const res = await fetch('/api/tickets/respond', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ id: ticket.id, response, status }),
       });
-
+  
       if (!res.ok) {
         throw new Error('Failed to submit response');
       }
-
+  
       await res.json();
       router.push('/admin');
     } catch (err) {
@@ -54,7 +48,7 @@ const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
       setLoading(false);
     }
   };
-
+  
   if (!ticket) {
     return <div>Loading...</div>;
   }
