@@ -1,11 +1,11 @@
 "use client";
-import React from 'react';
-import useFetchTickets from '../hooks/useFetchTickets';
+import React from "react";
+import useFetchTickets from "../hooks/useFetchTickets";
 import TicketList from "../components/AdminTicketList";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 const AdminPanel: React.FC = () => {
-  const { tickets, isLoading, error } = useFetchTickets('/api/tickets/get');
+  const { tickets, isLoading, error } = useFetchTickets("/api/tickets/get");
   const router = useRouter();
 
   const handleTicketClick = (ticketId: number) => {
@@ -13,7 +13,7 @@ const AdminPanel: React.FC = () => {
   };
 
   const handleBackClick = () => {
-    router.push('/');
+    router.push("/");
   };
 
   return (

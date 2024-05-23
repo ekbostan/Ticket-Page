@@ -13,9 +13,9 @@ const useFetchTickets = (url: string): FetchTicketsResult => {
       if (!response.ok) throw new Error("Network response was not ok");
       const data: Ticket[] = await response.json();
       setTickets(data);
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error fetching tickets:", err);
-      // setError(err.message);
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
