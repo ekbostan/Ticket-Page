@@ -2,8 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { fetchTicket } from '../../utils/ticketUtils'
-
+import { fetchTicket } from '../../utils/ticketUtils';
 
 const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter();
@@ -15,18 +14,20 @@ const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
 
   useEffect(() => {
     if (id) {
-      fetchTicket(id).then(data => {
-        setTicket(data);
-        setResponse(data.response || '');
-        setStatus(data.status || 'new');
-      }).catch(err => setError(err.message));
+      fetchTicket(id)
+        .then(data => {
+          setTicket(data);
+          setResponse(data.response || '');
+          setStatus(data.status || 'new');
+        })
+        .catch(err => setError(err.message));
     }
   }, [id]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
-  
+
     try {
       const res = await fetch('/api/tickets/respond', {
         method: 'POST',
@@ -35,11 +36,11 @@ const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
         },
         body: JSON.stringify({ id: ticket.id, response, status }),
       });
-  
+
       if (!res.ok) {
         throw new Error('Failed to submit response');
       }
-  
+
       await res.json();
       router.push('/admin');
     } catch (err) {
@@ -48,7 +49,7 @@ const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
       setLoading(false);
     }
   };
-  
+
   if (!ticket) {
     return <div>Loading...</div>;
   }
@@ -56,6 +57,12 @@ const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
   return (
     <div className="min-h-screen w-full bg-white">
       <div className="container mx-auto px-4 py-8">
+        <button
+          onClick={() => router.push('/admin')}
+          className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded mb-4"
+        >
+          Back to Admin Page
+        </button>
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <div className="px-4 py-5 sm:px-6">
             <h3 className="text-xl leading-6 font-medium text-gray-900">
