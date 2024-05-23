@@ -16,7 +16,7 @@ interface Ticket {
 
 const Home: React.FC = () => {
   const [showForm, setShowForm] = useState<boolean>(false);
-  const { tickets, isLoading, error, setTickets, refetch } =
+  const { tickets, isLoading, error, setTickets } =
     useFetchTickets("/api/tickets/get");
   const router = useRouter();
 
@@ -50,7 +50,7 @@ const Home: React.FC = () => {
 
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-center items-center">
-          <TicketForm onClose={handleClose} onAddTicket={handleAddTicket} refetch={refetch} />
+          <TicketForm onClose={handleClose} onAddTicket={handleAddTicket} />
         </div> 
       )}
 

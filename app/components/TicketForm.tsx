@@ -10,14 +10,12 @@ interface Ticket {
   created_at: string;
 }
 
-// Define the props expected by the TicketForm component
 interface TicketFormProps {
   onClose: () => void;
   onAddTicket: (ticket: Ticket) => void;
-  refetch: () => void;
 }
 
-const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket, refetch }) => {
+const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -37,7 +35,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket, refetch }
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!isValidEmail(email) || !isValidName(name)) {
-      setError("Please enter valid name and email.");
+      setError("Please enter a valid name and email.");
       return;
     }
 
@@ -58,7 +56,6 @@ const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket, refetch }
         created_at: new Date().toISOString()
       };
       onAddTicket(newTicket); 
-      refetch();  
       setName('');
       setEmail('');
       setDescription('');

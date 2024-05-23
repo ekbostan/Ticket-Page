@@ -14,7 +14,6 @@ interface FetchTicketsResult {
   isLoading: boolean;
   error: string | null;
   setTickets: React.Dispatch<React.SetStateAction<Ticket[]>>;
-  refetch: () => void;  
 }
 
 const useFetchTickets = (url: string): FetchTicketsResult => {
@@ -41,7 +40,7 @@ const useFetchTickets = (url: string): FetchTicketsResult => {
     fetchTickets();
   }, [fetchTickets]);
 
-  return { tickets, isLoading, error, setTickets, refetch: fetchTickets };
+  return { tickets, isLoading, error, setTickets};
 }
 
 export default useFetchTickets;
