@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, FormEvent } from "react";
 
+// Define the Ticket interface for type safety
 interface Ticket {
   id: number;
   name: string;
@@ -9,68 +10,60 @@ interface Ticket {
   created_at: string;
 }
 
+// Define the props expected by the TicketForm component
 interface TicketFormProps {
   onClose: () => void;
   onAddTicket: (ticket: Ticket) => void;
+  refetch: () => void;
 }
 
-const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
+const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket, refetch }) => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  function isValidEmail(email: string) {
+  // Validate the email format
+  function isValidEmail(email: string): boolean {
     return /\S+@\S+\.\S+/.test(email);
   }
 
-  function isValidName(name: string) {
+  // Check that the name is not just whitespace
+  function isValidName(name: string): boolean {
     return name.trim() !== '';
   }
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  // Handle form submission
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!isValidEmail(email)) {
-      setError("Please enter a valid email address.");
+    if (!isValidEmail(email) || !isValidName(name)) {
+      setError("Please enter valid name and email.");
       return;
     }
 
-    if (!isValidName(name)) {
-      setError("Name cannot be empty.");
-      return;
-    }
-
-    setError("");
-    const tempId = Math.floor(Math.random() * 1000000); // Generate a random ID for frontend use only
-    const createdAt = new Date().toISOString();
-    const ticket: Partial<Ticket> = { name, email, description }; // Partial ticket
-
+    const ticketDetails = { name, email, description };
     const response = await fetch("/api/tickets/add", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(ticket),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(ticketDetails),
     });
 
-    /* This is just for UI reactive purposes it will not stay once the page is reloaded to fix this probably Reactquery revalidate or state-app management will do */
-
     if (response.ok) {
-      const responseData = await response.json(); 
+      const newTicketData = await response.json(); 
       const newTicket: Ticket = {
-        id: tempId,
-        name: name,
-        email: email,
-        description: description,
-        status: responseData?.status || "Open",
-        created_at: createdAt
+        ...newTicketData,
+        name,
+        email,
+        description,
+        created_at: new Date().toISOString()
       };
-      console.log("Ticket submitted successfully", newTicket);
-      setName("");
-      setEmail("");
-      setDescription("");
       onAddTicket(newTicket); 
-      onClose(); 
+      refetch();  
+      setName('');
+      setEmail('');
+      setDescription('');
+      setError('');
+      onClose();
     } else {
       setError("Failed to submit ticket. Please try again.");
     }

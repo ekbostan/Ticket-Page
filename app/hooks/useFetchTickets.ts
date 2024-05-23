@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface Ticket {
   id: number;
@@ -14,6 +14,7 @@ interface FetchTicketsResult {
   isLoading: boolean;
   error: string | null;
   setTickets: React.Dispatch<React.SetStateAction<Ticket[]>>;
+  refetch: () => void;  
 }
 
 const useFetchTickets = (url: string): FetchTicketsResult => {
@@ -21,27 +22,26 @@ const useFetchTickets = (url: string): FetchTicketsResult => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setTickets(data);
-      } catch (err) {
-        console.error("Error fetching tickets:", err);
-        setError((err as Error).message);  // Handle unknown error type
-      } finally {
+  const fetchTickets = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data: Ticket[] = await response.json();
+      setTickets(data);
+    } catch (err) {
+        console.error('Error fetching tickets:', err);
+        // setError(err.message);
+    } finally {
         setIsLoading(false);
-      }
-    };
-    fetchData();
+    }
   }, [url]);
 
-  return { tickets, isLoading, error, setTickets };
+  useEffect(() => {
+    fetchTickets();
+  }, [fetchTickets]);
+
+  return { tickets, isLoading, error, setTickets, refetch: fetchTickets };
 }
 
 export default useFetchTickets;
