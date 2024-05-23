@@ -4,6 +4,7 @@ import useFetchTickets from "../hooks/useFetchTickets";
 import TicketList from "../components/AdminTicketList";
 import { useRouter } from "next/navigation";
 
+
 const AdminPanel: React.FC = () => {
   const { tickets, isLoading, error } = useFetchTickets("/api/tickets/get");
   const router = useRouter();
@@ -36,6 +37,7 @@ const AdminPanel: React.FC = () => {
           <TicketList tickets={tickets} onTicketClick={handleTicketClick} />
         )}
       </div>
+      
     </div>
   );
 };

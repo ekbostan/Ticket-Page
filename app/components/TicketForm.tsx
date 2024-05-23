@@ -1,5 +1,6 @@
 import React, { useState, FormEvent } from "react";
 import { Ticket, TicketFormProps } from "../../types/types";
+import { toast } from "react-toastify";
 
 const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
   const [name, setName] = useState<string>("");
@@ -47,6 +48,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
       setDescription("");
       setError("");
       onClose();
+      toast.success("Ticket submitted successfully!"); 
     } else {
       setError("Failed to submit ticket. Please try again.");
     }

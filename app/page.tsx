@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import useFetchTickets from "./hooks/useFetchTickets";
-import TicketForm from "./components/TicketForm";
+import TicketForm from "./components/TicketForm"
 import TicketList from "./components/TicketList";
 import { useRouter } from "next/navigation";
 import { Ticket } from "../types/types";
