@@ -1,18 +1,5 @@
-import React from 'react';
-
-interface Ticket {
-  id: number;
-  name: string;
-  email: string;
-  description: string;
-  status: string;
-  created_at: string;
-}
-
-interface TicketListProps {
-  tickets: Ticket[];
-  onTicketClick: (ticketId: number) => void;
-}
+import React from "react";
+import { Ticket, TicketListProps } from "../../types/types";
 
 const TicketList: React.FC<TicketListProps> = ({ tickets, onTicketClick }) => {
   return (
@@ -25,7 +12,9 @@ const TicketList: React.FC<TicketListProps> = ({ tickets, onTicketClick }) => {
             onClick={() => onTicketClick(ticket.id)}
           >
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-indigo-600 truncate">{ticket.name}</p>
+              <p className="text-sm font-medium text-indigo-600 truncate">
+                {ticket.name}
+              </p>
               <div className="ml-2 flex-shrink-0 flex">
                 <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                   {ticket.status}

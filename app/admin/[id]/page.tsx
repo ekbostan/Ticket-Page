@@ -43,8 +43,8 @@ const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
 
       await res.json();
       router.push('/admin');
-    } catch (err) {
-      // setError(err.message);
+    } catch (err:any) {
+      setError(err.message);
     } finally {
       setLoading(false);
     }

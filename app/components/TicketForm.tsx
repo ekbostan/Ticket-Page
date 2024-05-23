@@ -1,19 +1,5 @@
 import React, { useState, FormEvent } from "react";
-
-// Define the Ticket interface for type safety
-interface Ticket {
-  id: number;
-  name: string;
-  email: string;
-  description: string;
-  status: string;
-  created_at: string;
-}
-
-interface TicketFormProps {
-  onClose: () => void;
-  onAddTicket: (ticket: Ticket) => void;
-}
+import { Ticket, TicketFormProps } from "../../types/types";
 
 const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
   const [name, setName] = useState<string>("");
@@ -28,7 +14,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
 
   // Check that the name is not just whitespace
   function isValidName(name: string): boolean {
-    return name.trim() !== '';
+    return name.trim() !== "";
   }
 
   // Handle form submission
@@ -47,19 +33,19 @@ const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
     });
 
     if (response.ok) {
-      const newTicketData = await response.json(); 
+      const newTicketData = await response.json();
       const newTicket: Ticket = {
         ...newTicketData,
         name,
         email,
         description,
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
       };
-      onAddTicket(newTicket); 
-      setName('');
-      setEmail('');
-      setDescription('');
-      setError('');
+      onAddTicket(newTicket);
+      setName("");
+      setEmail("");
+      setDescription("");
+      setError("");
       onClose();
     } else {
       setError("Failed to submit ticket. Please try again.");
@@ -69,20 +55,20 @@ const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
-      onClick={onClose} 
+      onClick={onClose}
     >
       <form
-        onClick={(e) => e.stopPropagation()} 
+        onClick={(e) => e.stopPropagation()}
         onSubmit={handleSubmit}
         className="relative w-full max-w-2xl bg-white p-10 border border-gray-300 rounded-lg shadow-lg space-y-6"
-        style={{ maxHeight: '90vh', overflowY: 'auto' }}
+        style={{ maxHeight: "90vh", overflowY: "auto" }}
       >
         <button
           type="button"
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-lg p-1"
           aria-label="Close form"
-          style={{ fontSize: '1.5rem' }} 
+          style={{ fontSize: "1.5rem" }}
         >
           &#x2715;
         </button>
@@ -92,7 +78,10 @@ const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
         {error && <p className="text-red-500">{error}</p>}
         <div className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
               Name
             </label>
             <input
@@ -107,7 +96,10 @@ const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -122,7 +114,10 @@ const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
             />
           </div>
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700"
+            >
               Problem Description
             </label>
             <textarea

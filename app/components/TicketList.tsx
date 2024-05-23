@@ -1,20 +1,15 @@
 import React from "react";
-
-interface Ticket {
-  id: number;
-  name: string;
-  email: string;
-  description: string;
-  status: string;
-  created_at: string;
-}
+import { Ticket } from "../../types/types";
 
 interface TicketListProps {
   tickets: Ticket[];
 }
-
 const formatDate = (dateString: string) => {
-  const options: Intl.DateTimeFormatOptions = {year:"numeric", month: "long", day: "numeric" };
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
   return new Date(dateString).toLocaleDateString(undefined, options);
 };
 

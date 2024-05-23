@@ -4,15 +4,7 @@ import useFetchTickets from "./hooks/useFetchTickets";
 import TicketForm from "./components/TicketForm";
 import TicketList from "./components/TicketList";
 import { useRouter } from "next/navigation";
-
-interface Ticket {
-  id: number;
-  name: string;
-  email: string;
-  description: string;
-  status: string;
-  created_at: string;
-}
+import { Ticket } from "../types/types";
 
 const Home: React.FC = () => {
   const [showForm, setShowForm] = useState<boolean>(false);
@@ -51,7 +43,7 @@ const Home: React.FC = () => {
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-center items-center">
           <TicketForm onClose={handleClose} onAddTicket={handleAddTicket} />
-        </div> 
+        </div>
       )}
 
       {isLoading ? (
