@@ -1,26 +1,28 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { fetchTicket } from '../../utils/ticketUtils';
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { fetchTicket } from "../../utils/ticketUtils";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter();
   const [ticket, setTicket] = useState<any | null>(null);
-  const [response, setResponse] = useState('');
-  const [status, setStatus] = useState('new');
+  const [response, setResponse] = useState("");
+  const [status, setStatus] = useState("new");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (id) {
       fetchTicket(id)
-        .then(data => {
+        .then((data) => {
           setTicket(data);
-          setResponse(data.response || '');
-          setStatus(data.status || 'new');
+          setResponse(data.response || "");
+          setStatus(data.status || "new");
         })
-        .catch(err => setError(err.message));
+        .catch((err) => setError(err.message));
     }
   }, [id]);
 
@@ -30,21 +32,23 @@ const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
 
     try {
       const res = await fetch(`/api/ticket?id=${id}`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({response, status }),
+        body: JSON.stringify({ response, status }),
       });
 
       if (!res.ok) {
-        throw new Error('Failed to submit response');
+        throw new Error("Failed to submit response");
       }
 
       await res.json();
-      router.push('/admin');
-    } catch (err:any) {
+      toast.success("Response submitted successfully!");
+      router.push("/admin");
+    } catch (err: any) {
       setError(err.message);
+      toast.error("Failed to submit response");
     } finally {
       setLoading(false);
     }
@@ -58,7 +62,7 @@ const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
     <div className="min-h-screen w-full bg-white">
       <div className="container mx-auto px-4 py-8">
         <button
-          onClick={() => router.push('/admin')}
+          onClick={() => router.push("/admin")}
           className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded mb-4"
         >
           Back to Admin Page
@@ -87,7 +91,9 @@ const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
                 </dd>
               </div>
               <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Description</dt>
+                <dt className="text-sm font-medium text-gray-500">
+                  Description
+                </dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                   {ticket.description}
                 </dd>
@@ -122,7 +128,7 @@ const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
                         className="bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded"
                         disabled={loading}
                       >
-                        {loading ? 'Submitting...' : 'Submit Response'}
+                        {loading ? "Submitting..." : "Submit Response"}
                       </button>
                     </div>
                     {error && <p className="text-red-500">{error}</p>}

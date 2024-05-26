@@ -38,3 +38,11 @@ export const formatStatus = (status: string) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 };
+
+export function isValidEmail(email: string): boolean {
+  return /\S+@\S+\.\S+/.test(email);
+}
+
+export function isValidName(name: string): boolean {
+  return name.trim() !== "";
+}

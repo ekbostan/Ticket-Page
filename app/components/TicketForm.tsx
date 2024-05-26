@@ -1,6 +1,7 @@
 import React, { useState, FormEvent } from "react";
 import { Ticket, TicketFormProps } from "../../types/types";
 import { toast } from "react-toastify";
+import { isValidEmail, isValidName } from "../utils/ticketUtils";
 
 const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
   const [name, setName] = useState<string>("");
@@ -8,17 +9,6 @@ const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
   const [description, setDescription] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  // Validate the email format
-  function isValidEmail(email: string): boolean {
-    return /\S+@\S+\.\S+/.test(email);
-  }
-
-  // Check that the name is not just whitespace
-  function isValidName(name: string): boolean {
-    return name.trim() !== "";
-  }
-
-  // Handle form submission
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!isValidEmail(email) || !isValidName(name)) {
@@ -48,7 +38,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
       setDescription("");
       setError("");
       onClose();
-      toast.success("Ticket submitted successfully!"); 
+      toast.success("Ticket submitted successfully!");
     } else {
       setError("Failed to submit ticket. Please try again.");
     }

@@ -55,7 +55,7 @@ const Home: React.FC = () => {
         )}
 
         {isLoading ? (
-          <p>Loading tickets...</p>
+          <p className="text-black">Loading tickets...</p>
         ) : error ? (
           <div className="flex justify-center items-center min-h-screen">
             <p className="text-red-500">Error loading tickets: {error}</p>
