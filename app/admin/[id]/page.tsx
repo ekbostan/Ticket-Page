@@ -100,8 +100,8 @@ const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
                     onChange={(e) => setStatus(e.target.value)}
                     className="form-select mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                   >
-                    <option value="new">Pending</option>
-                    <option value="in progress">In Progress</option>
+                    <option value="pending">Pending</option>
+                    <option value="in-progress">In Progress</option>
                     <option value="resolved">Resolved</option>
                   </select>
                 </dd>

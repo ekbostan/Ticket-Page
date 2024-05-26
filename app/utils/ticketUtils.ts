@@ -12,7 +12,7 @@ export const fetchTicket = async (id: string) => {
         return { backgroundColor: '#e5e7eb', color: '#374151' }; 
       case "resolved":
         return { backgroundColor: '#86efac', color: '#065f46' }; 
-      case "in progress":
+      case "in-progress":
         return { backgroundColor: '#6b7280', color: '#f3f4f6' }; 
       default:
         return { backgroundColor: '#e5e7eb', color: '#4b5563' }; 

@@ -14,18 +14,26 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error("Error fetching tickets:", error);
-      return NextResponse.json({ error: "Failed to fetch tickets" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Failed to fetch tickets" },
+        { status: 500 }
+      );
     }
 
     if (data.length === 0) {
-      return NextResponse.json({ message: "No tickets found" }, { status: 404 });
+      return NextResponse.json(
+        { message: "No tickets found" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json(data, { status: 200 });
-
   } catch (err) {
     console.error("Error processing request:", err);
-    return NextResponse.json({ error: "Failed to process request" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to process request" },
+      { status: 500 }
+    );
   }
 }
 
@@ -43,18 +51,18 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error("Error inserting ticket:", error);
-      return NextResponse.json({ error: "Failed to submit ticket" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Failed to submit ticket" },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json(insertedData, { status: 201 });
-
   } catch (err) {
     console.error("Error processing request:", err);
-    return NextResponse.json({ error: "Failed to process request" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to process request" },
+      { status: 500 }
+    );
   }
-}
-
-// Optional: Method not allowed handler for unsupported methods
-export async function methodNotAllowed() {
-  return NextResponse.json({ error: "Method Not Allowed" }, { status: 405 });
 }
