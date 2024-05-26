@@ -83,8 +83,8 @@ export async function POST(request: NextRequest) {
       to: recipientEmail,
       from: 'erolkaanbostan2000@gmail.com',
       subject: `Ticket #${id} Status Updated`,
-      text: `The status of ticket #${id} has been updated to ${status}.`,
-      html: `<p>The status of ticket #${id} has been updated to <strong>${status}</strong>.</p>`,
+      text: `The status of ticket #${id} has been updated to ${status}. Response: ${response}.`,
+      html: `<p>The status of ticket #${id} has been updated to <strong>${status}</strong>.</p><p>Response: ${response}</p>`,
     };
 
     try {
