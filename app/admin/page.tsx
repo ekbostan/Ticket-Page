@@ -26,7 +26,7 @@ const AdminPanel: React.FC = () => {
             onClick={handleBackClick}
             className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
           >
-            Back to Home
+            Back to Ticket Page
           </button>
         </div>
         {isLoading ? (
