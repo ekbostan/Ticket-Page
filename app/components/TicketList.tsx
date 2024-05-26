@@ -1,17 +1,10 @@
 import React from "react";
 import { Ticket } from "../../types/types";
+import { getStatusStyles, formatDate } from "../utils/ticketUtils";
 
 interface TicketListProps {
   tickets: Ticket[];
 }
-const formatDate = (dateString: string) => {
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-  return new Date(dateString).toLocaleDateString(undefined, options);
-};
 
 const TicketList: React.FC<TicketListProps> = ({ tickets }) => {
   return (
@@ -27,9 +20,12 @@ const TicketList: React.FC<TicketListProps> = ({ tickets }) => {
                 {ticket.name}
               </p>
               <div className="ml-2 flex-shrink-0 flex">
-                <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                  {ticket.status}
-                </p>
+              <span
+                className="inline-block px-2 py-1 rounded"
+                style={getStatusStyles(ticket.status)}
+              >
+                {ticket.status}
+              </span>
               </div>
             </div>
             <div className="mt-2 sm:flex sm:justify-between">

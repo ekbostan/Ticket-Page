@@ -29,12 +29,12 @@ const TicketDetail: React.FC<{ id: string }> = ({ id }) => {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/tickets/respond', {
+      const res = await fetch(`/api/ticket?id=${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: ticket.id, response, status }),
+        body: JSON.stringify({response, status }),
       });
 
       if (!res.ok) {

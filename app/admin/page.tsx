@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 
 const AdminPanel: React.FC = () => {
-  const { tickets, isLoading, error } = useFetchTickets("/api/tickets/get");
+  const { tickets, isLoading, error } = useFetchTickets("/api/tickets");
   const router = useRouter();
 
   const handleTicketClick = (ticketId: number) => {

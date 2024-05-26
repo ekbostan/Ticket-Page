@@ -27,7 +27,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ onClose, onAddTicket }) => {
     }
 
     const ticketDetails = { name, email, description };
-    const response = await fetch("/api/tickets/add", {
+    const response = await fetch("/api/tickets", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(ticketDetails),

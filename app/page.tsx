@@ -9,7 +9,7 @@ import { Ticket } from "../types/types";
 const Home: React.FC = () => {
   const [showForm, setShowForm] = useState<boolean>(false);
   const { tickets, isLoading, error, setTickets } =
-    useFetchTickets("/api/tickets/get");
+    useFetchTickets("/api/tickets");
   const router = useRouter();
 
   const handleClose = () => {
@@ -17,7 +17,8 @@ const Home: React.FC = () => {
   };
 
   const handleAddTicket = (ticket: Ticket) => {
-    setTickets((prevTickets) => [...prevTickets, ticket]);
+    const newTicket = { ...ticket, status: "pending" };
+    setTickets((prevTickets) => [...prevTickets, newTicket]);
   };
   const goToAdminPage = () => {
     router.push("/admin");
@@ -46,13 +47,15 @@ const Home: React.FC = () => {
         </div>
       )}
 
-      {isLoading ? (
-        <p>Loading tickets...</p>
-      ) : error ? (
-        <p className="text-red-500">Error loading tickets: {error}</p>
-      ) : (
-        <TicketList tickets={tickets} />
-      )}
+{isLoading ? (
+    <p>Loading tickets...</p>
+  ) : error ? (
+    <div className="flex justify-center items-center min-h-screen">
+      <p className="text-red-500">Error loading tickets: {error}</p>
+    </div>
+  ) : (
+    <TicketList tickets={tickets} />
+  )}
     </div>
   );
 };
