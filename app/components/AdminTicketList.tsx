@@ -1,6 +1,6 @@
 import React from "react";
 import { TicketListProps } from "../../types/types";
-import { getStatusStyles } from "../utils/ticketUtils";
+import { getStatusStyles, formatStatus } from "../utils/ticketUtils";
 
 const TicketList: React.FC<TicketListProps> = ({ tickets, onTicketClick }) => {
   return (
@@ -17,12 +17,12 @@ const TicketList: React.FC<TicketListProps> = ({ tickets, onTicketClick }) => {
                 {ticket.name}
               </p>
               <div className="ml-2 flex-shrink-0 flex">
-              <span
-                className="inline-block px-2 py-1 rounded"
-                style={getStatusStyles(ticket.status)}
-              >
-                {ticket.status}
-              </span>
+                <span
+                  className="inline-block px-2 py-1 rounded"
+                  style={getStatusStyles(ticket.status)}
+                >
+                  {formatStatus(ticket.status)}
+                </span>
               </div>
             </div>
             <div className="mt-2 sm:flex sm:justify-between">

@@ -1,6 +1,6 @@
 import React from "react";
 import { Ticket } from "../../types/types";
-import { getStatusStyles, formatDate } from "../utils/ticketUtils";
+import { getStatusStyles, formatDate, formatStatus  } from "../utils/ticketUtils";
 
 interface TicketListProps {
   tickets: Ticket[];
@@ -24,7 +24,7 @@ const TicketList: React.FC<TicketListProps> = ({ tickets }) => {
                 className="inline-block px-2 py-1 rounded"
                 style={getStatusStyles(ticket.status)}
               >
-                {ticket.status}
+                {formatStatus(ticket.status)}
               </span>
               </div>
             </div>
