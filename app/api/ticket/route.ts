@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+import sgMail from "@sendgrid/mail";
 
 export async function GET(request: NextRequest) {
   const cookieStore = cookies();
@@ -48,15 +49,50 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const { data: updatedData, error } = await supabase
+    const { data: updatedData, error: updateError } = await supabase
       .from("Tickets")
       .update({ status })
       .eq("id", id)
       .single();
 
-    if (error) {
-      console.error("Error updating ticket:", error);
+    if (updateError) {
+      console.error("Error updating ticket:", updateError);
       return NextResponse.json({ error: "Failed to update ticket" }, { status: 500 });
+    }
+
+    const { data: ticketData, error: fetchError } = await supabase
+      .from("Tickets")
+      .select("email")
+      .eq("id", id)
+      .single();
+
+    if (fetchError || !ticketData) {
+      console.error("Error fetching ticket email:", fetchError);
+      return NextResponse.json({ error: "Failed to fetch ticket email" }, { status: 500 });
+    }
+
+    const recipientEmail = ticketData.email;
+
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) {
+      throw new Error("SendGrid API key is missing");
+    }
+    sgMail.setApiKey(apiKey);
+
+    const msg = {
+      to: recipientEmail,
+      from: 'erolkaanbostan2000@gmail.com',
+      subject: `Ticket #${id} Status Updated`,
+      text: `The status of ticket #${id} has been updated to ${status}.`,
+      html: `<p>The status of ticket #${id} has been updated to <strong>${status}</strong>.</p>`,
+    };
+
+    try {
+      await sgMail.send(msg);
+      console.log('Email sent to', recipientEmail);
+    } catch (emailError:any) {
+      console.error('Error sending email:', emailError.response ? emailError.response.body : emailError.message);
+      return NextResponse.json({ error: "Failed to send email notification" }, { status: 500 });
     }
 
     return NextResponse.json(updatedData, { status: 200 });
